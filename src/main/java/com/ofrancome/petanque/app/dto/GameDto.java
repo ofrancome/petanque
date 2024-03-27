@@ -1,4 +1,4 @@
-package com.ofrancome.petanque.app.controller;
+package com.ofrancome.petanque.app.dto;
 
 import java.util.Set;
 

@@ -1,5 +1,6 @@
 package com.ofrancome.petanque.app.controller;
 
+import com.ofrancome.petanque.app.dto.GameDto;
 import com.ofrancome.petanque.domain.games.Game;
 import com.ofrancome.petanque.domain.games.GameService;
 import org.springframework.web.bind.annotation.GetMapping;
