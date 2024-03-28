@@ -4,9 +4,11 @@ import com.ofrancome.petanque.domain.LocalDateService;
 import com.ofrancome.petanque.domain.elo.EloCalculator;
 import com.ofrancome.petanque.domain.exceptions.PlayerDoesNotExistException;
 import com.ofrancome.petanque.domain.players.Player;
+import com.ofrancome.petanque.domain.players.Ranking;
 import com.ofrancome.petanque.domain.seasons.Season;
 import com.ofrancome.petanque.infra.GameRepository;
 import com.ofrancome.petanque.infra.PlayerRepository;
+import com.ofrancome.petanque.infra.RankingRepository;
 import com.ofrancome.petanque.infra.SeasonRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,14 +25,16 @@ public class GameServiceImpl implements GameService {
     private final SeasonRepository seasonRepository;
     private final EloCalculator eloCalculator;
     private final LocalDateService localDateService;
+    private final RankingRepository rankingRepository;
 
 
-    public GameServiceImpl(PlayerRepository playerRepository, GameRepository gameRepository, SeasonRepository seasonRepository, EloCalculator eloCalculator, LocalDateService localDateService, LocalDateService localDateService1) {
+    public GameServiceImpl(PlayerRepository playerRepository, GameRepository gameRepository, SeasonRepository seasonRepository, EloCalculator eloCalculator, LocalDateService localDateService, LocalDateService localDateService1, RankingRepository rankingRepository) {
         this.playerRepository = playerRepository;
         this.gameRepository = gameRepository;
         this.seasonRepository = seasonRepository;
         this.eloCalculator = eloCalculator;
         this.localDateService = localDateService1;
+        this.rankingRepository = rankingRepository;
     }
 
     @Override
@@ -38,6 +42,9 @@ public class GameServiceImpl implements GameService {
         Set<Player> winners = retrievePlayers(winnersNames);
         Set<Player> losers = retrievePlayers(losersName);
         Season currentSeason = seasonRepository.currentSeason();
+        addRankingIfMissing(winners, currentSeason);
+        addRankingIfMissing(losers, currentSeason);
+
         Integer eloSwitch = eloCalculator.getEloSwitch(winners, losers, currentSeason);
 
         final Game newGame = new Game();
@@ -55,6 +62,18 @@ public class GameServiceImpl implements GameService {
             playerRepository.save(p);
         });
         return game;
+    }
+
+    private void addRankingIfMissing(Set<Player> losers, Season currentSeason) {
+        for (Player loser : losers) {
+            if (!loser.lastRanking().getSeason().equals(currentSeason)) {
+                Ranking ranking = new Ranking();
+                ranking.setElo(1200);
+                rankingRepository.save(ranking);
+                currentSeason.addRanking(ranking);
+                loser.addRanking(ranking);
+            }
+        }
     }
 
     @Override

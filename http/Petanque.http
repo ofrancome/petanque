@@ -46,3 +46,7 @@ POST http://localhost:8080/seasons
 ###
 # @name Get current season
 GET http://localhost:8080/seasons/current
+
+###
+# @name Get all seasons
+GET http://localhost:8080/seasons
