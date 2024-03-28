@@ -1,7 +1,10 @@
 package com.ofrancome.petanque.app.controller;
 
+import com.ofrancome.petanque.app.dto.PlayerCreationDto;
 import com.ofrancome.petanque.domain.players.Player;
 import com.ofrancome.petanque.domain.players.PlayerService;
+import org.springframework.boot.actuate.web.exchanges.HttpExchange;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,12 +25,12 @@ public class PlayerController {
     }
 
     @GetMapping
-    public Set<Player> getAllPlayers() {
-        return playerService.retrievePlayers();
+    public ResponseEntity<Set<Player>> getAllPlayers() {
+        return ResponseEntity.ok(playerService.retrievePlayers());
     }
 
-    @PostMapping("/{name}")
-    public Player addPlayer(@PathVariable String name) {
-        return playerService.addPlayer(name);
+    @PostMapping
+    public ResponseEntity<Player> addPlayer(@RequestBody PlayerCreationDto playerCreationDto) {
+        return ResponseEntity.ok(playerService.addPlayer(playerCreationDto.getName()));
     }
 }

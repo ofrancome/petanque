@@ -3,6 +3,7 @@ package com.ofrancome.petanque.app.controller;
 import com.ofrancome.petanque.app.dto.GameDto;
 import com.ofrancome.petanque.domain.games.Game;
 import com.ofrancome.petanque.domain.games.GameService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,12 +23,12 @@ public class GameController {
     }
 
     @GetMapping
-    public Set<Game> getGames() {
-        return gameService.retrieveGames();
+    public ResponseEntity<Set<Game>> getGames() {
+        return ResponseEntity.ok(gameService.retrieveGames());
     }
 
     @PostMapping
-    public Game addGame(@RequestBody GameDto gameDto) {
-        return gameService.addGame(gameDto.getWinners(), gameDto.getLosers(), gameDto.getLosersScore());
+    public ResponseEntity<Game> addGame(@RequestBody GameDto gameDto) {
+        return ResponseEntity.ok(gameService.addGame(gameDto.getWinners(), gameDto.getLosers(), gameDto.getLosersScore()));
     }
 }

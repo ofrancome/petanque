@@ -2,7 +2,12 @@
 
 ###
 # @name Add Player
-POST http://localhost:8080/players/garrett
+POST http://localhost:8080/players
+Content-Type: application/json
+
+{
+  "name": "PES"
+}
 
 ###
 # @name Get players
