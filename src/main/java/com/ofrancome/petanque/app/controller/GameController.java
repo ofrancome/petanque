@@ -1,8 +1,11 @@
 package com.ofrancome.petanque.app.controller;
 
-import com.ofrancome.petanque.app.dto.GameDto;
+import com.ofrancome.petanque.app.dto.requests.GameCreationDto;
+import com.ofrancome.petanque.app.dto.responses.GameDto;
 import com.ofrancome.petanque.domain.games.Game;
 import com.ofrancome.petanque.domain.games.GameService;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("games")
@@ -23,12 +27,15 @@ public class GameController {
     }
 
     @GetMapping
-    public ResponseEntity<Set<Game>> getGames() {
-        return ResponseEntity.ok(gameService.retrieveGames());
+    @Operation(summary ="Retrieve all games")
+    public ResponseEntity<List<GameDto>> getGames() {
+        return ResponseEntity.ok(gameService.retrieveGames().stream().map(GameDto::from).collect(Collectors.toList()));
     }
 
     @PostMapping
-    public ResponseEntity<Game> addGame(@RequestBody GameDto gameDto) {
-        return ResponseEntity.ok(gameService.addGame(gameDto.getWinners(), gameDto.getLosers(), gameDto.getLosersScore()));
+    @Operation(summary ="Report a new game")
+    public ResponseEntity<GameDto> addGame(@Valid @RequestBody GameCreationDto gameCreationDto) {
+        Game game = gameService.addGame(gameCreationDto.getWinners(), gameCreationDto.getLosers(), gameCreationDto.getLosersScore());
+        return ResponseEntity.ok(GameDto.from(game));
     }
 }

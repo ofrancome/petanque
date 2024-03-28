@@ -1,17 +1,20 @@
-package com.ofrancome.petanque.app.dto;
+package com.ofrancome.petanque.app.dto.requests;
+
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 
 import java.util.Set;
 
-public class GameDto {
-    private Set<String> winners;
-    private Set<String> losers;
-    private Integer losersScore;
+public class GameCreationDto {
+    @NotEmpty
+    private Set<@NotBlank String> winners;
 
-    public GameDto(Set<String> winners, Set<String> losers, Integer losersScore) {
-        this.winners = winners;
-        this.losers = losers;
-        this.losersScore = losersScore;
-    }
+    @NotEmpty
+    private Set<String> losers;
+
+    @Max(12)
+    private Integer losersScore;
 
     public Set<String> getWinners() {
         return winners;

@@ -6,6 +6,8 @@ import com.ofrancome.petanque.domain.seasons.Season;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Set;
 
 import static com.ofrancome.petanque.domain.TestUtils.createPlayer;
@@ -18,20 +20,31 @@ class EloCalculatorTest {
     @Test
     @DisplayName("Elo switch should be correctlyCalculated - fair fight is 16")
     void eloSwitchShouldBeCorrectlyCalculatedFair() {
+        Season season = new Season();
+        season.setId(1L);
+        season.setStart(LocalDate.of(2024, Month.APRIL, 25));
         assertThat(eloCalculator.getEloSwitch(Set.of(createPlayer("Olivier", 1200)),
-                Set.of(createPlayer("Jon", 1200)))).isEqualTo(16);
+                Set.of(createPlayer("Jon", 1200)), season)).isEqualTo(16);
     }
 
     @Test
     @DisplayName("Elo switch should be correctlyCalculated - less fair fight is 14")
     void eloSwitchShouldBeCorrectlyCalculatedLessFair() {
-        assertThat(eloCalculator.getEloSwitch(Set.of(createPlayer("Olivier", 1225)),
-                Set.of(createPlayer("Jon", 1175)))).isEqualTo(14);
+        Season season = new Season();
+        season.setId(1L);
+        season.setStart(LocalDate.of(2024, Month.APRIL, 25));
+        assertThat(eloCalculator.getEloSwitch(
+                Set.of(createPlayer("Olivier", 1225)),
+                Set.of(createPlayer("Jon", 1175)),
+                season)).isEqualTo(14);
     }
 
     @Test
     @DisplayName("Elo switch should be correctyl calculated - Multiple players per team fair is 16")
     void eloSwitchShouldBeCorrectylCalculatedMultiplePlayersPerTeamFairIs16() {
+        Season season = new Season();
+        season.setId(1L);
+        season.setStart(LocalDate.of(2024, Month.APRIL, 25));
         assertThat(eloCalculator.getEloSwitch(
                 Set.of(
                         createPlayer("Olivier", 1400),
@@ -42,7 +55,8 @@ class EloCalculatorTest {
                         createPlayer("Jon", 1200),
                         createPlayer("Simon", 1100),
                         createPlayer("Erwan", 1300)
-                )
+                ),
+                season
         )).isEqualTo(16);
     }
 }

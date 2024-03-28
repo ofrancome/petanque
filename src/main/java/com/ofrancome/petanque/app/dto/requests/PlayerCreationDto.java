@@ -1,6 +1,10 @@
-package com.ofrancome.petanque.app.dto;
+package com.ofrancome.petanque.app.dto.requests;
+
+import jakarta.validation.constraints.NotBlank;
 
 public class PlayerCreationDto {
+
+    @NotBlank
     String name;
 
     public String getName() {

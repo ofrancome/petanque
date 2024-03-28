@@ -1,5 +1,6 @@
 package com.ofrancome.petanque.domain.players;
 
+import com.ofrancome.petanque.domain.exceptions.PlayerAlreadyExistsException;
 import com.ofrancome.petanque.domain.seasons.Season;
 import com.ofrancome.petanque.infra.PlayerRepository;
 import com.ofrancome.petanque.infra.RankingRepository;
@@ -7,6 +8,7 @@ import com.ofrancome.petanque.infra.SeasonRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -25,6 +27,10 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public Player addPlayer(String name) {
+        if (playerRepository.existsByName(name)) {
+            throw new PlayerAlreadyExistsException();
+        }
+
         Player player = new Player();
         player.setName(name);
         player.setGamesLost(new HashSet<>());
@@ -46,6 +52,11 @@ public class PlayerServiceImpl implements PlayerService {
         Set<Player> players = new HashSet<>();
         playerEntities.forEach(players::add);
         return players;
+    }
+
+    @Override
+    public Optional<Player> getPlayer(String name) {
+        return playerRepository.findByName(name);
     }
 
 

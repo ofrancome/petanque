@@ -6,12 +6,16 @@ POST http://localhost:8080/players
 Content-Type: application/json
 
 {
-  "name": "PES"
+  "name": "Vincent"
 }
 
 ###
 # @name Get players
 GET http://localhost:8080/players
+
+###
+# @name Get player
+GET http://localhost:8080/players/olivier
 
 ###
 # @name Get Games
@@ -25,13 +29,14 @@ Content-Type: application/json
 {
   "winners": [
     "olivier",
-    "jon"
+    "jon",
+    "PES"
   ],
   "losers": [
     "tim",
     "garrett"
   ],
-  "losersScore": 2
+  "losersScore": 8
 }
 
 ###

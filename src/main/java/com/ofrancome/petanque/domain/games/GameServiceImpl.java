@@ -2,14 +2,16 @@ package com.ofrancome.petanque.domain.games;
 
 import com.ofrancome.petanque.domain.LocalDateService;
 import com.ofrancome.petanque.domain.elo.EloCalculator;
+import com.ofrancome.petanque.domain.exceptions.PlayerDoesNotExistException;
 import com.ofrancome.petanque.domain.players.Player;
+import com.ofrancome.petanque.domain.seasons.Season;
 import com.ofrancome.petanque.infra.GameRepository;
 import com.ofrancome.petanque.infra.PlayerRepository;
-import com.ofrancome.petanque.domain.seasons.Season;
 import com.ofrancome.petanque.infra.SeasonRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,8 +37,8 @@ public class GameServiceImpl implements GameService {
     public Game addGame(Set<String> winnersNames, Set<String> losersName, Integer losersScore) {
         Set<Player> winners = retrievePlayers(winnersNames);
         Set<Player> losers = retrievePlayers(losersName);
-        Integer eloSwitch = eloCalculator.getEloSwitch(winners, losers);
         Season currentSeason = seasonRepository.currentSeason();
+        Integer eloSwitch = eloCalculator.getEloSwitch(winners, losers, currentSeason);
 
         final Game newGame = new Game();
         newGame.setGameDay(localDateService.today());
@@ -64,6 +66,12 @@ public class GameServiceImpl implements GameService {
     }
 
     private Set<Player> retrievePlayers(Set<String> winners) {
-        return winners.stream().map(playerRepository::findByName).collect(Collectors.toSet());
+        return winners.stream()
+                .map(name -> {
+                    Optional<Player> player = playerRepository.findByName(name);
+                    if (player.isEmpty()) throw new PlayerDoesNotExistException(name + " does not exist");
+                    return player;
+                })
+                .map(Optional::get).collect(Collectors.toSet());
     }
 }

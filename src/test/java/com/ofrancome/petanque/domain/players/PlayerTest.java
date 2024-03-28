@@ -26,7 +26,7 @@ class PlayerTest {
         season.addRanking(ranking);
         player.addRanking(ranking);
 
-        Assertions.assertThat(player.currentElo()).isEqualTo(1300);
+        Assertions.assertThat(player.lastRanking().getElo()).isEqualTo(1300);
     }
 
     @Test
@@ -57,12 +57,16 @@ class PlayerTest {
         Game loss = new Game();
         loss.setId(1L);
         loss.setEloSwitch(16);
+        loss.setGameDay(LocalDate.of(2024, Month.APRIL, 11));
+        loss.setLosersScore(4);
         tim.addWin(loss);
         season.addGame(loss);
         olivier.addLoss(loss);
         Game win = new Game();
         win.setId(2L);
         win.setEloSwitch(16);
+        win.setGameDay(LocalDate.of(2024, Month.APRIL, 11));
+        win.setLosersScore(2);
         olivier.addWin(win);
         tim.addLoss(win);
         season.addGame(win);
@@ -98,18 +102,24 @@ class PlayerTest {
         Game loss = new Game();
         loss.setId(1L);
         loss.setEloSwitch(16);
+        loss.setGameDay(LocalDate.of(2024, Month.APRIL, 11));
+        loss.setLosersScore(4);
         tim.addWin(loss);
         season.addGame(loss);
         olivier.addLoss(loss);
         Game win = new Game();
         win.setId(2L);
         win.setEloSwitch(16);
+        win.setGameDay(LocalDate.of(2024, Month.APRIL, 11));
+        win.setLosersScore(5);
         olivier.addWin(win);
         tim.addLoss(win);
         season.addGame(win);
         Game otherWin = new Game();
         otherWin.setId(3L);
         otherWin.setEloSwitch(15);
+        otherWin.setGameDay(LocalDate.of(2024, Month.APRIL, 11));
+        otherWin.setLosersScore(5);
         olivier.addWin(otherWin);
         tim.addLoss(otherWin);
         season.addGame(otherWin);
@@ -140,7 +150,7 @@ class PlayerTest {
         season.addGame(win);
         olivier.addWin(win);
 
-        Assertions.assertThat(olivier.currentElo()).isEqualTo(1216);
+        Assertions.assertThat(olivier.lastRanking().getElo()).isEqualTo(1216);
 
     }
 
@@ -167,7 +177,7 @@ class PlayerTest {
         season.addGame(loss);
         olivier.addLoss(loss);
 
-        Assertions.assertThat(olivier.currentElo()).isEqualTo(1184);
+        Assertions.assertThat(olivier.lastRanking().getElo()).isEqualTo(1184);
 
     }
 }

@@ -116,7 +116,6 @@ public class Game {
             winners = new HashSet<>();
         }
         winners.add(player);
-        player.getGamesWon().add(this);
     }
 
     public void addLoser(Player player) {
@@ -124,7 +123,6 @@ public class Game {
             losers = new HashSet<>();
         }
         losers.add(player);
-        player.getGamesLost().add(this);
     }
 
     @Override

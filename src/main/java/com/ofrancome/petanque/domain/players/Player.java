@@ -128,8 +128,8 @@ public class Player {
 
     }
 
-    public Integer currentElo() {
-        return rankings.stream().max(Comparator.comparing(r -> r.getSeason().getId())).orElseThrow().getElo();
+    public Ranking lastRanking() {
+        return rankings.stream().max(Comparator.comparing(ranking -> ranking.getSeason().getId())).orElseThrow();
     }
 
     public Integer getWinrate() {
