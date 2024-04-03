@@ -1,14 +1,9 @@
 services:
-  mysql:
-    image: 'mysql:latest'
-    container_name: petanquedb
-    restart: 'always'
-    expose:
-      - '3306'
-    ports:
-      - '3306:3306'
+  postgres:
+    image: 'postgres:latest'
     environment:
-      MYSQL_ROOT_PASSWORD: 'pass'
-      MYSQL_DATABASE: 'db'
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'pass'
+      - 'POSTGRES_DB=petanquedb'
+      - 'POSTGRES_PASSWORD=K-ro'
+      - 'POSTGRES_USER=petanque_usr'
+    ports:
+      - '5432:5432'

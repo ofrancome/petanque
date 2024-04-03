@@ -6,7 +6,7 @@ POST http://localhost:8080/players
 Content-Type: application/json
 
 {
-  "name": "Vincent"
+  "name": "John"
 }
 
 ###
@@ -28,13 +28,12 @@ Content-Type: application/json
 
 {
   "winners": [
-    "olivier",
-    "jon",
-    "PES"
+    "Olivier",
+    "John"
   ],
   "losers": [
-    "tim",
-    "garrett"
+    "Tim",
+    "Vincent"
   ],
   "losersScore": 8
 }

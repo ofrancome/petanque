@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: petanque
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    url: 'jdbc:postgresql://localhost:5432/petanquedb'
+    username: petanque_usr
+    password: K-ro
+server:
+  error:
+    include-stacktrace: never

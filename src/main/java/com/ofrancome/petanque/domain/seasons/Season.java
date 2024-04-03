@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ofrancome.petanque.domain.games.Game;
 import com.ofrancome.petanque.domain.players.Ranking;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,7 +24,7 @@ import java.util.Set;
 public class Season {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @OneToMany
@@ -37,6 +38,7 @@ public class Season {
     @NotNull
     private LocalDate start;
 
+    @Column(name = "endDate")
     private LocalDate end;
 
     public void setId(Long id) {
