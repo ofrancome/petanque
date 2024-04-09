@@ -13,3 +13,8 @@ spring:
 server:
   error:
     include-stacktrace: never
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    url: /petanque.openapi.yaml

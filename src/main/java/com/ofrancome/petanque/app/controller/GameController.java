@@ -27,13 +27,11 @@ public class GameController {
     }
 
     @GetMapping
-    @Operation(summary ="Retrieve all games")
     public ResponseEntity<List<GameDto>> getGames() {
         return ResponseEntity.ok(gameService.retrieveGames().stream().map(GameDto::from).collect(Collectors.toList()));
     }
 
     @PostMapping
-    @Operation(summary ="Report a new game")
     public ResponseEntity<GameDto> addGame(@Valid @RequestBody GameCreationDto gameCreationDto) {
         Game game = gameService.addGame(gameCreationDto.getWinners(), gameCreationDto.getLosers(), gameCreationDto.getLosersScore());
         return ResponseEntity.ok(GameDto.from(game));

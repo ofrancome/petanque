@@ -1,0 +1,270 @@
+openapi: 3.0.1
+info:
+  title: Petanque
+  version: v0
+  description: Keep score and ranking for petanque players
+  contact:
+    name: Olivier Francome
+servers:
+  -
+    url: 'http://localhost:8080'
+    description: Generated server url
+paths:
+  /seasons:
+    get:
+      tags:
+        - season-controller
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SeasonDto'
+          description: OK
+      operationId: getSeasons
+      summary: Retrieve all seasons
+    post:
+      tags:
+        - season-controller
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SeasonDto'
+          description: OK
+      operationId: newSeason
+      summary: End the current season and create the next one
+  /players:
+    get:
+      tags:
+        - player-controller
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlayerDto'
+          description: OK
+      operationId: getAllPlayers
+      summary: Retrieve all players
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlayerCreationDto'
+        required: true
+      tags:
+        - player-controller
+      responses:
+        '400':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PlayerDto'
+          description: Invalid Player
+      operationId: addPlayer
+      summary: Sign up a new player
+  /games:
+    get:
+      tags:
+        - game-controller
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GameDto'
+          description: OK
+      operationId: getGames
+      summary: Retrieve all games
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameCreationDto'
+        required: true
+      tags:
+        - game-controller
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GameDto'
+          description: OK
+      operationId: addGame
+      summary: Report a new game
+  /seasons/current:
+    get:
+      tags:
+        - season-controller
+      responses:
+        '200':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SeasonDto'
+          description: OK
+      operationId: currentSeason
+      summary: Retrieve current version
+  '/players/{name}':
+    get:
+      tags:
+        - player-controller
+      parameters:
+        -
+          name: name
+          schema:
+            type: string
+          in: path
+          required: true
+      responses:
+        '404':
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PlayerDto'
+          description: Player not found
+      operationId: getPlayer
+      summary: Retrieve given player
+components:
+  schemas:
+    SeasonDto:
+      type: object
+      properties:
+        number:
+          format: int64
+          type: integer
+        start:
+          type: string
+        end:
+          type: string
+        rankings:
+          type: array
+          items:
+            $ref: '#/components/schemas/SeasonRankingDto'
+    SeasonRankingDto:
+      type: object
+      properties:
+        player:
+          type: string
+        elo:
+          format: int32
+          type: integer
+    PlayerCreationDto:
+      description: Data needed to register a new Player
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          description: New player's name
+          type: string
+    PlayerDto:
+      type: object
+      properties:
+        name:
+          type: string
+        avatar:
+          type: string
+        lastRanking:
+          $ref: '#/components/schemas/PlayerRankingDto'
+        rankings:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlayerRankingDto'
+        nbGames:
+          format: int32
+          type: integer
+        nbWins:
+          format: int32
+          type: integer
+        winRate:
+          format: int32
+          type: integer
+    PlayerRankingDto:
+      type: object
+      properties:
+        season:
+          format: int64
+          type: integer
+        elo:
+          format: int32
+          type: integer
+    GameCreationDto:
+      description: Data needed to register a new game
+      required:
+        - losers
+        - winners
+      type: object
+      properties:
+        winners:
+          description: >-
+            List of names of players on the winning side. All players have to be registered into
+            the app before appearing on a game.
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        losers:
+          description: >-
+            List of names of players on the losing side. All players have to be registered into
+            the app before appearing on a game.
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        losersScore:
+          format: int32
+          description: How many points (can be zero) the losers scored before dropping the game
+          maximum: 12
+          type: integer
+    GameDto:
+      type: object
+      properties:
+        rank:
+          format: int64
+          description: 'Chronological rank of the game, since the beginning of times...'
+          type: integer
+        winners:
+          description: >-
+            List of names of players on the winning side. All players have to be registered into
+            the app before appearing on a game.
+          type: array
+          items:
+            type: string
+        losers:
+          description: >-
+            List of names of players on the losing side. All players have to be registered into
+            the app before appearing on a game.
+          type: array
+          items:
+            type: string
+        losersScore:
+          format: int32
+          description: How many points (can be zero) the losers scored before dropping the game
+          type: integer
+        eloSwitch:
+          format: int32
+          description: >-
+            Impact the game had on every player ranking. This value represents how many points the
+            winners earned, and therefore how many points got deduced from each loser's rankings.
+          type: integer
+        season:
+          format: int64
+          description: >-
+            Identifier of the season this game belongs to. Seasons endpoints may be queried with
+            this ID.
+          type: integer
+        gameDay:
+          description: Date on which the game happened
+          type: string

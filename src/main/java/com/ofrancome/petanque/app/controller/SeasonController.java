@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("seasons")
 public class SeasonController {
 
     private final SeasonService seasonService;
@@ -24,19 +23,16 @@ public class SeasonController {
     }
 
     @PostMapping
-    @Operation(summary ="End the current season and create the next one")
     public ResponseEntity<SeasonDto> newSeason() {
         return ResponseEntity.ok(SeasonDto.from(seasonService.newSeason()));
     }
 
     @GetMapping
-    @Operation(summary ="Retrieve all seasons")
     public ResponseEntity<List<SeasonDto>> getSeasons() {
         return ResponseEntity.ok(seasonService.retrieveSeasons().stream().map(SeasonDto::from).toList());
     }
 
     @GetMapping("/current")
-    @Operation(summary = "Retrieve current version")
     public ResponseEntity<SeasonDto> currentSeason() {
         return ResponseEntity.ok(SeasonDto.from(seasonService.currentSeason()));
     }

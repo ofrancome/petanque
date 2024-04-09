@@ -32,26 +32,17 @@ public class PlayerController {
     }
 
     @GetMapping
-    @Operation(summary = "Retrieve all players")
     public ResponseEntity<List<PlayerDto>> getAllPlayers() {
         return ResponseEntity.ok(playerService.retrievePlayers().stream().map(PlayerDto::from).collect(Collectors.toList()));
     }
 
     @GetMapping("/{name}")
-    @Operation(summary = "Retrieve given player")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "404", description = "Player not found")
-    })
     public ResponseEntity<PlayerDto> getPlayer(@PathVariable("name") String name) {
         Optional<PlayerDto> playerDto = playerService.getPlayer(name).map(PlayerDto::from);
         return ResponseEntity.of(playerDto);
     }
 
     @PostMapping
-    @Operation(summary = "Sign up a new player")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "400", description = "Invalid Player")
-    })
     public ResponseEntity<PlayerDto> addPlayer(@Valid @RequestBody PlayerCreationDto playerCreationDto) {
         return ResponseEntity.ok(PlayerDto.from(playerService.addPlayer(playerCreationDto.getName())));
     }
