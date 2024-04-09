@@ -13,7 +13,7 @@ paths:
   /seasons:
     get:
       tags:
-        - season-controller
+        - Seasons
       responses:
         '200':
           content:
@@ -27,7 +27,7 @@ paths:
       summary: Retrieve all seasons
     post:
       tags:
-        - season-controller
+        - Seasons
       responses:
         '200':
           content:
@@ -40,7 +40,7 @@ paths:
   /players:
     get:
       tags:
-        - player-controller
+        - Players
       responses:
         '200':
           content:
@@ -60,7 +60,7 @@ paths:
               $ref: '#/components/schemas/PlayerCreationDto'
         required: true
       tags:
-        - player-controller
+        - Players
       responses:
         '400':
           content:
@@ -73,7 +73,7 @@ paths:
   /games:
     get:
       tags:
-        - game-controller
+        - Games
       responses:
         '200':
           content:
@@ -93,7 +93,7 @@ paths:
               $ref: '#/components/schemas/GameCreationDto'
         required: true
       tags:
-        - game-controller
+        - Games
       responses:
         '200':
           content:
@@ -106,7 +106,7 @@ paths:
   /seasons/current:
     get:
       tags:
-        - season-controller
+        - Seasons
       responses:
         '200':
           content:
@@ -119,23 +119,42 @@ paths:
   '/players/{name}':
     get:
       tags:
-        - player-controller
+        - Players
       parameters:
         -
           name: name
+          description: Name of the player you are looking for
           schema:
             type: string
           in: path
           required: true
       responses:
-        '404':
+        '200':
           content:
-            '*/*':
+            application/json:
               schema:
                 $ref: '#/components/schemas/PlayerDto'
+          description: OK
+        '404':
           description: Player not found
       operationId: getPlayer
       summary: Retrieve given player
+  '/players/{name}/games':
+    get:
+      tags:
+        - Players
+        - Games
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GameDto'
+          description: OK
+      operationId: getAllGamesForPlayer
+      summary: Retrieve all games a given player played
 components:
   schemas:
     SeasonDto:
