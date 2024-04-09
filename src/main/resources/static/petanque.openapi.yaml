@@ -158,17 +158,16 @@ components:
           items:
             $ref: '#/components/schemas/SeasonRankingDto'
       example:
-        -
-          number: 2
-          start: '2024-04-03'
-          end: '2025-03-21'
-          rankings:
-            -
-              player: Tim
-              elo: 185
-            -
-              player: Mathilde
-              elo: 1402
+        number: 2
+        start: '2024-04-03'
+        end: '2025-03-21'
+        rankings:
+          -
+            player: Tim
+            elo: 185
+          -
+            player: Mathilde
+            elo: 1402
     SeasonRankingDto:
       description: Represents a given player ranking for the season
       type: object
@@ -181,12 +180,8 @@ components:
           description: Elo score for the player
           type: integer
       example:
-        -
-          player: Jon
-          elo: 1218
-        -
-          player: Tim
-          elo: 1182
+        player: Jon
+        elo: 1218
     PlayerCreationDto:
       description: Data needed to register a new Player
       required:
@@ -196,28 +191,66 @@ components:
         name:
           description: New player's name
           type: string
+      example:
+        name: '4'
     PlayerDto:
+      description: Details of a player
       type: object
       properties:
         name:
+          description: The player's name
           type: string
         avatar:
+          description: Name of the avatar image file
           type: string
         lastRanking:
           $ref: '#/components/schemas/PlayerRankingDto'
+          description: The player ranking for the current season
         rankings:
+          description: History of all rankings per season
           type: array
           items:
             $ref: '#/components/schemas/PlayerRankingDto'
         nbGames:
           format: int32
+          description: Total number of games played.
           type: integer
         nbWins:
           format: int32
+          description: Total number of wins
           type: integer
         winRate:
           format: int32
+          description: Global win rate
           type: integer
+        nbWinsSeason:
+          description: Number of wins in the current season
+          type: integer
+        nbGamesSeason:
+          description: Number of games played in the current season.
+          type: integer
+        winRateSeason:
+          description: Winrate in the current season
+          type: integer
+      example:
+        name: Jon
+        avatar: coucou.png
+        lastRanking:
+          season: 3
+          elo: 1184
+        rankings:
+          -
+            season: 1
+            elo: 1223
+          -
+            season: 2
+            elo: 1302
+        nbGames: 70
+        nbWins: 35
+        winRate: 50
+        nbWinsSeason: 10
+        nbGamesSeason: 15
+        winRateSeason: 66
     PlayerRankingDto:
       description: Represents a given season rating for the player
       type: object
@@ -258,19 +291,21 @@ components:
             type: string
         losersScore:
           format: int32
-          description: How many points (can be zero) the losers scored before dropping the game
+          description: >-
+            How many points (between 0 and 12 included) the losers scored before dropping the
+            game.
           maximum: 12
           type: integer
       example:
-        -
-          winners:
-            - Olivier
-            - Jon
-          losers:
-            - Tim
-            - Garrett
-          losersScore: 1
+        winners:
+          - Olivier
+          - Jon
+        losers:
+          - Tim
+          - Garrett
+        losersScore: 1
     GameDto:
+      description: Represents a game.
       type: object
       properties:
         rank:
@@ -293,7 +328,9 @@ components:
             type: string
         losersScore:
           format: int32
-          description: How many points (can be zero) the losers scored before dropping the game
+          description: >-
+            How many points (between 0 and 12 included) the losers scored before dropping the
+            game.
           type: integer
         eloSwitch:
           format: int32
@@ -310,3 +347,15 @@ components:
         gameDay:
           description: Date on which the game happened
           type: string
+      example:
+        rank: 11
+        winners:
+          - Olivier
+          - Mylene
+        losers:
+          - Leny
+          - Jon
+        losersScore: 6
+        eloSwitch: 19
+        season: 2
+        gameDay: '2024-04-25'
