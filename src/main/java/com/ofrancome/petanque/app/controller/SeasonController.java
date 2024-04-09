@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+@RequestMapping("seasons")
 public class SeasonController {
 
     private final SeasonService seasonService;
