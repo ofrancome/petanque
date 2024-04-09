@@ -139,27 +139,54 @@ paths:
 components:
   schemas:
     SeasonDto:
+      description: 'Represents a season. When a new season starts, all players rankings go back to 1200.'
       type: object
       properties:
         number:
           format: int64
+          description: Number of the season. This can be used as an ID.
           type: integer
         start:
+          description: First day of the season
           type: string
         end:
+          description: Last day of the season. This can be empty for the current season.
           type: string
         rankings:
+          description: List of all players rankings for the season.
           type: array
           items:
             $ref: '#/components/schemas/SeasonRankingDto'
+      example:
+        -
+          number: 2
+          start: '2024-04-03'
+          end: '2025-03-21'
+          rankings:
+            -
+              player: Tim
+              elo: 185
+            -
+              player: Mathilde
+              elo: 1402
     SeasonRankingDto:
+      description: Represents a given player ranking for the season
       type: object
       properties:
         player:
+          description: Player name
           type: string
         elo:
           format: int32
+          description: Elo score for the player
           type: integer
+      example:
+        -
+          player: Jon
+          elo: 1218
+        -
+          player: Tim
+          elo: 1182
     PlayerCreationDto:
       description: Data needed to register a new Player
       required:
@@ -192,14 +219,20 @@ components:
           format: int32
           type: integer
     PlayerRankingDto:
+      description: Represents a given season rating for the player
       type: object
       properties:
         season:
           format: int64
+          description: Season number
           type: integer
         elo:
           format: int32
+          description: Elo score for that season
           type: integer
+      example:
+        season: 4
+        elo: 1250
     GameCreationDto:
       description: Data needed to register a new game
       required:
@@ -228,6 +261,15 @@ components:
           description: How many points (can be zero) the losers scored before dropping the game
           maximum: 12
           type: integer
+      example:
+        -
+          winners:
+            - Olivier
+            - Jon
+          losers:
+            - Tim
+            - Garrett
+          losersScore: 1
     GameDto:
       type: object
       properties:
