@@ -28,6 +28,10 @@ class PlayerDtoTest {
                 List.of(new PlayerRankingDto(1L, 1216)),
                 1,
                 1,
+                100,
+                1L,
+                1,
+                1,
                 100
         );
         Game game = new Game();
