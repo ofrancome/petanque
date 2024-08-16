@@ -1,6 +1,7 @@
 package com.ofrancome.petanque.domain.games;
 
 import com.ofrancome.petanque.domain.LocalDateService;
+import com.ofrancome.petanque.domain.api.GameService;
 import com.ofrancome.petanque.domain.elo.EloCalculator;
 import com.ofrancome.petanque.domain.exceptions.PlayerDoesNotExistException;
 import com.ofrancome.petanque.domain.players.Player;

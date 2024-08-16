@@ -16,6 +16,12 @@ public class GameCreationDto {
     @Max(12)
     private Integer losersScore;
 
+    public GameCreationDto(Set<@NotBlank String> winners, Set<String> losers, Integer losersScore) {
+        this.winners = winners;
+        this.losers = losers;
+        this.losersScore = losersScore;
+    }
+
     public Set<String> getWinners() {
         return winners;
     }

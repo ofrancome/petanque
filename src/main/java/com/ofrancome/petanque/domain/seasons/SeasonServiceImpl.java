@@ -1,6 +1,7 @@
 package com.ofrancome.petanque.domain.seasons;
 
 import com.ofrancome.petanque.domain.LocalDateService;
+import com.ofrancome.petanque.domain.api.SeasonService;
 import com.ofrancome.petanque.infra.SeasonRepository;
 import org.springframework.stereotype.Service;
 

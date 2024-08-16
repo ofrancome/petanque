@@ -1,7 +1,5 @@
 package com.ofrancome.petanque.domain.players;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ofrancome.petanque.domain.seasons.Season;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,11 +19,11 @@ public class Ranking {
     private Long id;
 
     @ManyToOne
-    @JsonBackReference
+    //@JsonBackReference
     private Player player;
 
     @ManyToOne
-    @JsonBackReference
+    //@JsonBackReference
     private Season season;
 
     private Integer elo;

@@ -29,13 +29,13 @@ Content-Type: application/json
 {
   "winners": [
     "Olivier",
-    "John"
+    "PES"
   ],
   "losers": [
-    "Tim",
+    "John",
     "Vincent"
   ],
-  "losersScore": 8
+  "losersScore": 6
 }
 
 ###

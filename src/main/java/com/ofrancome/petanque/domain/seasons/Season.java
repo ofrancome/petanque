@@ -1,7 +1,5 @@
 package com.ofrancome.petanque.domain.seasons;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ofrancome.petanque.domain.games.Game;
 import com.ofrancome.petanque.domain.players.Ranking;
 import jakarta.persistence.Column;
@@ -15,7 +13,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -28,17 +25,17 @@ public class Season {
     private Long id;
 
     @OneToMany
-    @JsonManagedReference
+    //@JsonManagedReference
     private Set<Game> games;
 
     @OneToMany
-    @JsonManagedReference
+    //@JsonManagedReference
     private Set<Ranking> rankings;
 
     @NotNull
     private LocalDate start;
 
-    @Column(name = "endDate")
+    @Column(name = "end_date")
     private LocalDate end;
 
     public void setId(Long id) {

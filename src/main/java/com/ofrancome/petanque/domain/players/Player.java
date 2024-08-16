@@ -1,7 +1,5 @@
 package com.ofrancome.petanque.domain.players;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ofrancome.petanque.domain.games.Game;
 import com.ofrancome.petanque.domain.seasons.Season;
 import jakarta.persistence.Entity;
@@ -30,15 +28,15 @@ public class Player {
     private String avatar;
 
     @OneToMany
-    @JsonManagedReference
+    //@JsonManagedReference
     private Set<Ranking> rankings;
 
     @ManyToMany(mappedBy = "winners")
-    @JsonBackReference
+    //@JsonBackReference
     private Set<Game> gamesWon;
 
     @ManyToMany(mappedBy = "losers")
-    @JsonBackReference
+    //@JsonBackReference
     private Set<Game> gamesLost;
 
     public long getId() {
@@ -132,7 +130,7 @@ public class Player {
         return rankings.stream().max(Comparator.comparing(ranking -> ranking.getSeason().getId())).orElseThrow();
     }
 
-    public Integer getWinrate() {
+    public Integer computeWinrate() {
         double nbWins = gamesWon.size();
         double nbLoss = gamesLost.size();
         double preciseWinrate = nbWins / (nbLoss + nbWins) * 100;

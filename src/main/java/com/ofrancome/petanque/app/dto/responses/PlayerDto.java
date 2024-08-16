@@ -22,7 +22,7 @@ public record PlayerDto(String name, String avatar, PlayerRankingDto lastRanking
                 player.getRankings().stream().map(PlayerRankingDto::from).toList(),
                 player.getGamesLost().size() + player.getGamesWon().size(),
                 player.getGamesWon().size(),
-                player.getWinrate(),
+                player.computeWinrate(),
                 lastSeasonId,
                 nbGamesSeason,
                 nbWinsSeason,

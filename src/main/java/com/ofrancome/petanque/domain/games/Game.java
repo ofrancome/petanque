@@ -1,7 +1,5 @@
 package com.ofrancome.petanque.domain.games;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ofrancome.petanque.domain.players.Player;
 import com.ofrancome.petanque.domain.seasons.Season;
 import jakarta.persistence.Entity;
@@ -16,11 +14,10 @@ import jakarta.persistence.Table;
 
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "GAME")
+@Table(name = "game")
 public class Game {
 
     @Id
@@ -31,7 +28,7 @@ public class Game {
 
     @ManyToOne
     @JoinColumn(name = "season_id")
-    @JsonBackReference
+    //@JsonBackReference
     private Season season;
 
     @ManyToMany
@@ -40,7 +37,7 @@ public class Game {
         joinColumns = @JoinColumn(name = "game_id"),
         inverseJoinColumns = @JoinColumn(name = "player_id")
     )
-    @JsonManagedReference
+    //@JsonManagedReference
     private Set<Player> winners;
 
     @ManyToMany
@@ -49,7 +46,7 @@ public class Game {
         joinColumns = @JoinColumn(name = "game_id"),
         inverseJoinColumns = @JoinColumn(name = "player_id")
     )
-    @JsonManagedReference
+    //@JsonManagedReference
     private Set<Player> losers;
 
     private Integer losersScore;

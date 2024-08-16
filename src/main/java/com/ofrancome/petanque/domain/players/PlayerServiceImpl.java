@@ -1,13 +1,17 @@
 package com.ofrancome.petanque.domain.players;
 
+import com.ofrancome.petanque.domain.api.PlayerService;
 import com.ofrancome.petanque.domain.exceptions.PlayerAlreadyExistsException;
+import com.ofrancome.petanque.domain.games.Game;
 import com.ofrancome.petanque.domain.seasons.Season;
 import com.ofrancome.petanque.infra.PlayerRepository;
 import com.ofrancome.petanque.infra.RankingRepository;
 import com.ofrancome.petanque.infra.SeasonRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -57,6 +61,18 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public Optional<Player> getPlayer(String name) {
         return playerRepository.findByName(name);
+    }
+
+    @Override
+    public Optional<List<Game>> getAllGamesFor(String name) {
+        Optional<Player> player = getPlayer(name);
+        if (player.isEmpty()) {
+            return Optional.empty();
+        }
+        List<Game> games = new ArrayList<>();
+        games.addAll(player.get().getGamesWon());
+        games.addAll(player.get().getGamesLost());
+        return Optional.of(games);
     }
 
 

@@ -1,5 +1,6 @@
-package com.ofrancome.petanque.domain.games;
+package com.ofrancome.petanque.domain.api;
 
+import com.ofrancome.petanque.domain.games.Game;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;

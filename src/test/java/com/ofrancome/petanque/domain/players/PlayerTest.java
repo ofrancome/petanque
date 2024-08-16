@@ -34,7 +34,6 @@ class PlayerTest {
     public void shouldGetAccurateWinrate50() {
         Season season = new Season();
         season.setId(1L);
-
         Ranking rankingOlivier = new Ranking();
         rankingOlivier.setId(1L);
         rankingOlivier.setElo(1200);
@@ -43,7 +42,6 @@ class PlayerTest {
         olivier.setName("Olivier");
         olivier.addRanking(rankingOlivier);
         season.addRanking(rankingOlivier);
-
         Ranking rankingTim = new Ranking();
         rankingTim.setId(2L);
         rankingTim.setElo(1200);
@@ -52,8 +50,6 @@ class PlayerTest {
         tim.setName("Olivier");
         tim.addRanking(rankingTim);
         season.addRanking(rankingTim);
-
-
         Game loss = new Game();
         loss.setId(1L);
         loss.setEloSwitch(16);
@@ -71,7 +67,7 @@ class PlayerTest {
         tim.addLoss(win);
         season.addGame(win);
 
-        Assertions.assertThat(olivier.getWinrate()).isEqualTo(50);
+        Assertions.assertThat(olivier.computeWinrate()).isEqualTo(50);
     }
 
     @Test
@@ -124,7 +120,7 @@ class PlayerTest {
         tim.addLoss(otherWin);
         season.addGame(otherWin);
 
-        Assertions.assertThat(olivier.getWinrate()).isEqualTo(66);
+        Assertions.assertThat(olivier.computeWinrate()).isEqualTo(66);
     }
 
     @Test
