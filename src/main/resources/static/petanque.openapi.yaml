@@ -85,6 +85,7 @@ paths:
           description: OK
       operationId: getGames
       summary: Retrieve all games
+      description: ''
     post:
       requestBody:
         content:
@@ -103,6 +104,12 @@ paths:
           description: OK
       operationId: addGame
       summary: Report a new game
+    delete:
+      operationId: deleteLastGame
+      summary: Cancels last game
+      description: >-
+        This will cancel last game. Each player will have their elo reset to what is was before the
+        game.
   /seasons/current:
     get:
       tags:
