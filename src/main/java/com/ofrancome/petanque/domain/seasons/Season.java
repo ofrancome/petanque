@@ -7,15 +7,22 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "SEASON")
 public class Season {
@@ -24,12 +31,10 @@ public class Season {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @OneToMany
-    //@JsonManagedReference
+    @OneToMany(mappedBy = "season")
     private Set<Game> games;
 
-    @OneToMany
-    //@JsonManagedReference
+    @OneToMany(mappedBy = "season")
     private Set<Ranking> rankings;
 
     @NotNull
@@ -37,46 +42,6 @@ public class Season {
 
     @Column(name = "end_date")
     private LocalDate end;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Set<Game> getGames() {
-        return games;
-    }
-
-    public void setGames(Set<Game> games) {
-        this.games = games;
-    }
-
-    public Set<Ranking> getRankings() {
-        return rankings;
-    }
-
-    public void setRankings(Set<Ranking> rankings) {
-        this.rankings = rankings;
-    }
-
-    public LocalDate getStart() {
-        return start;
-    }
-
-    public void setStart(LocalDate start) {
-        this.start = start;
-    }
-
-    public LocalDate getEnd() {
-        return end;
-    }
-
-    public void setEnd(LocalDate end) {
-        this.end = end;
-    }
 
     public void addRanking(Ranking ranking) {
         if (rankings == null) {

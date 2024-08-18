@@ -4,12 +4,11 @@ import com.ofrancome.petanque.domain.games.Game;
 import com.ofrancome.petanque.domain.players.Player;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
-public record GameDto(Long rank, List<String> winners, List<String> losers, Integer losersScore, Integer eloSwitch, Long season, String gameDay)
+public record GameDto(Long gameNumber, List<String> winners, List<String> losers, Integer losersScore, Integer eloSwitch, Long season, String gameDay)
         implements Serializable {
 
     public static GameDto from(Game game) {

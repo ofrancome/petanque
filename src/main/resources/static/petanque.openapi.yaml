@@ -337,7 +337,7 @@ components:
       properties:
         rank:
           format: int64
-          description: 'Chronological rank of the game, since the beginning of times...'
+          description: 'Chronological number of the game, since the beginning of times...'
           type: integer
         winners:
           description: >-

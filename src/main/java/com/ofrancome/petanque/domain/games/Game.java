@@ -11,11 +11,17 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "game")
 public class Game {
@@ -28,7 +34,7 @@ public class Game {
 
     @ManyToOne
     @JoinColumn(name = "season_id")
-    //@JsonBackReference
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Season season;
 
     @ManyToMany
@@ -37,7 +43,6 @@ public class Game {
         joinColumns = @JoinColumn(name = "game_id"),
         inverseJoinColumns = @JoinColumn(name = "player_id")
     )
-    //@JsonManagedReference
     private Set<Player> winners;
 
     @ManyToMany
@@ -46,67 +51,10 @@ public class Game {
         joinColumns = @JoinColumn(name = "game_id"),
         inverseJoinColumns = @JoinColumn(name = "player_id")
     )
-    //@JsonManagedReference
     private Set<Player> losers;
 
     private Integer losersScore;
     private Integer eloSwitch;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public LocalDate getGameDay() {
-        return gameDay;
-    }
-
-    public void setGameDay(LocalDate gameDay) {
-        this.gameDay = gameDay;
-    }
-
-    public Season getSeason() {
-        return season;
-    }
-
-    public void setSeason(Season season) {
-        this.season = season;
-    }
-
-    public Set<Player> getWinners() {
-        return winners;
-    }
-
-    public void setWinners(Set<Player> winners) {
-        this.winners = winners;
-    }
-
-    public Set<Player> getLosers() {
-        return losers;
-    }
-
-    public void setLosers(Set<Player> losers) {
-        this.losers = losers;
-    }
-
-    public Integer getLosersScore() {
-        return losersScore;
-    }
-
-    public void setLosersScore(Integer loserScore) {
-        this.losersScore = loserScore;
-    }
-
-    public Integer getEloSwitch() {
-        return eloSwitch;
-    }
-
-    public void setEloSwitch(Integer eloSwitch) {
-        this.eloSwitch = eloSwitch;
-    }
 
     public void addWinner(Player player) {
         if (winners == null) {

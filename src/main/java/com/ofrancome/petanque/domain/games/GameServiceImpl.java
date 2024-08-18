@@ -11,6 +11,7 @@ import com.ofrancome.petanque.infra.GameRepository;
 import com.ofrancome.petanque.infra.PlayerRepository;
 import com.ofrancome.petanque.infra.RankingRepository;
 import com.ofrancome.petanque.infra.SeasonRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -18,6 +19,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class GameServiceImpl implements GameService {
 
@@ -29,7 +31,7 @@ public class GameServiceImpl implements GameService {
     private final RankingRepository rankingRepository;
 
 
-    public GameServiceImpl(PlayerRepository playerRepository, GameRepository gameRepository, SeasonRepository seasonRepository, EloCalculator eloCalculator, LocalDateService localDateService, LocalDateService localDateService1, RankingRepository rankingRepository) {
+    public GameServiceImpl(final PlayerRepository playerRepository, final GameRepository gameRepository, final SeasonRepository seasonRepository, final EloCalculator eloCalculator, final LocalDateService localDateService, final LocalDateService localDateService1, final RankingRepository rankingRepository) {
         this.playerRepository = playerRepository;
         this.gameRepository = gameRepository;
         this.seasonRepository = seasonRepository;
@@ -39,20 +41,21 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Game addGame(Set<String> winnersNames, Set<String> losersName, Integer losersScore) {
-        Set<Player> winners = retrievePlayers(winnersNames);
-        Set<Player> losers = retrievePlayers(losersName);
-        Season currentSeason = seasonRepository.currentSeason();
+    public Game addGame(final Set<String> winnersNames, final Set<String> losersName, final Integer losersScore) {
+        log.info("Adding game");
+        final Set<Player> winners = retrievePlayers(winnersNames);
+        final Set<Player> losers = retrievePlayers(losersName);
+        final Season currentSeason = seasonRepository.currentSeason();
         addRankingIfMissing(winners, currentSeason);
         addRankingIfMissing(losers, currentSeason);
 
-        Integer eloSwitch = eloCalculator.getEloSwitch(winners, losers, currentSeason);
+        final Integer eloSwitch = eloCalculator.getEloSwitch(winners, losers, currentSeason);
 
         final Game newGame = new Game();
         newGame.setGameDay(localDateService.today());
         newGame.setLosersScore(losersScore);
         newGame.setEloSwitch(eloSwitch);
-        Game game = gameRepository.save(newGame);
+        final Game game = gameRepository.save(newGame);
         currentSeason.addGame(game);
         winners.forEach(p -> {
             p.addWin(game);
@@ -62,13 +65,14 @@ public class GameServiceImpl implements GameService {
             p.addLoss(game);
             playerRepository.save(p);
         });
+        log.info("Finished adding game");
         return game;
     }
 
-    private void addRankingIfMissing(Set<Player> losers, Season currentSeason) {
-        for (Player loser : losers) {
+    private void addRankingIfMissing(final Set<Player> losers, final Season currentSeason) {
+        for (final Player loser : losers) {
             if (!loser.lastRanking().getSeason().equals(currentSeason)) {
-                Ranking ranking = new Ranking();
+                final Ranking ranking = new Ranking();
                 ranking.setElo(1200);
                 rankingRepository.save(ranking);
                 currentSeason.addRanking(ranking);
@@ -79,16 +83,34 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Set<Game> retrieveGames() {
-        Iterable<Game> gameEntities = gameRepository.findAll();
-        Set<Game> games = new HashSet<>();
+        log.info("Retrieving games");
+        final Iterable<Game> gameEntities = gameRepository.findAll();
+        final Set<Game> games = new HashSet<>();
         gameEntities.forEach(games::add);
         return games;
     }
 
-    private Set<Player> retrievePlayers(Set<String> winners) {
+    @Override
+    public void deleteLastGame() {
+        final Game lastGame = gameRepository.findLastGame();
+
+        lastGame.getLosers().forEach(player ->
+        {
+            player.addElo(lastGame.getSeason(), lastGame.getEloSwitch());
+            playerRepository.save(player);
+        });
+        lastGame.getWinners().forEach(player -> {
+            player.deduceElo(lastGame.getSeason(), lastGame.getEloSwitch());
+            playerRepository.save(player);
+        });
+
+        gameRepository.delete(lastGame);
+    }
+
+    private Set<Player> retrievePlayers(final Set<String> winners) {
         return winners.stream()
                 .map(name -> {
-                    Optional<Player> player = playerRepository.findByName(name);
+                    final Optional<Player> player = playerRepository.findByName(name);
                     if (player.isEmpty()) throw new PlayerDoesNotExistException(name + " does not exist");
                     return player;
                 })

@@ -1,5 +1,19 @@
 # Petanque
 
+
+###
+# @name Add Season
+POST http://localhost:8080/seasons
+
+###
+# @name Add Player
+POST http://localhost:8080/players
+Content-Type: application/json
+
+{
+  "name": "Olivier"
+}
+
 ###
 # @name Add Player
 POST http://localhost:8080/players
@@ -15,11 +29,7 @@ GET http://localhost:8080/players
 
 ###
 # @name Get player
-GET http://localhost:8080/players/olivier
-
-###
-# @name Get Games
-GET http://localhost:8080/games
+GET http://localhost:8080/players/Olivier
 
 ###
 # @name Add Game
@@ -28,19 +38,36 @@ Content-Type: application/json
 
 {
   "winners": [
-    "Olivier",
-    "PES"
+    "Olivier"
   ],
   "losers": [
-    "John",
-    "Vincent"
+    "John"
   ],
-  "losersScore": 6
+  "losersScore": 5
 }
 
 ###
-# @name Add Season
-POST http://localhost:8080/seasons
+# @name Add Game
+POST http://localhost:8080/games
+Content-Type: application/json
+
+{
+  "winners": [
+    "John"
+  ],
+  "losers": [
+    "Olivier"
+  ],
+  "losersScore": 5
+}
+
+###
+# @name Get Games
+GET http://localhost:8080/games
+
+###
+# @name Delete last game
+DELETE http://localhost:8080/games
 
 ###
 # @name Get current season

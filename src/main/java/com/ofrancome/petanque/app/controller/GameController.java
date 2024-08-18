@@ -6,12 +6,14 @@ import com.ofrancome.petanque.domain.games.Game;
 import com.ofrancome.petanque.domain.api.GameService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,12 +29,18 @@ public class GameController {
 
     @GetMapping
     public ResponseEntity<List<GameDto>> getGames() {
-        return ResponseEntity.ok(gameService.retrieveGames().stream().map(GameDto::from).collect(Collectors.toList()));
+        return ResponseEntity.ok(gameService.retrieveGames().stream().map(GameDto::from).sorted(Comparator.comparing(GameDto::gameNumber).reversed()).toList());
     }
 
     @PostMapping
     public ResponseEntity<GameDto> addGame(@Valid @RequestBody GameCreationDto gameCreationDto) {
         Game game = gameService.addGame(gameCreationDto.getWinners(), gameCreationDto.getLosers(), gameCreationDto.getLosersScore());
         return ResponseEntity.ok(GameDto.from(game));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteGameLastGame() {
+        gameService.deleteLastGame();
+        return ResponseEntity.ok().build();
     }
 }

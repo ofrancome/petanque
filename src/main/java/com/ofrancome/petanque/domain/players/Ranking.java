@@ -19,11 +19,9 @@ public class Ranking {
     private Long id;
 
     @ManyToOne
-    //@JsonBackReference
     private Player player;
 
     @ManyToOne
-    //@JsonBackReference
     private Season season;
 
     private Integer elo;

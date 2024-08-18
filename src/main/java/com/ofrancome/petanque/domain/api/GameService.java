@@ -10,4 +10,5 @@ public interface GameService {
 
     Game addGame(Set<String> winners, Set<String> losers, Integer losersScore);
     Set<Game> retrieveGames();
+    void deleteLastGame();
 }

@@ -95,7 +95,7 @@ public class Player {
         ranking.setPlayer(this);
     }
 
-    private void addElo(Season season, Integer eloSwitch) {
+    public void addElo(Season season, Integer eloSwitch) {
         rankings.forEach(ranking -> {
             if (ranking.getSeason().equals(season)) {
                 ranking.setElo(ranking.getElo() + eloSwitch);
@@ -103,7 +103,7 @@ public class Player {
         });
     }
 
-    private void deduceElo(Season season, Integer eloSwitch) {
+    public void deduceElo(Season season, Integer eloSwitch) {
         addElo(season, eloSwitch * -1);
     }
 
