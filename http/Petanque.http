@@ -15,15 +15,6 @@ Content-Type: application/json
 }
 
 ###
-# @name Add Player
-POST http://localhost:8080/players
-Content-Type: application/json
-
-{
-  "name": "John"
-}
-
-###
 # @name Get players
 GET http://localhost:8080/players
 
@@ -42,21 +33,6 @@ Content-Type: application/json
   ],
   "losers": [
     "John"
-  ],
-  "losersScore": 5
-}
-
-###
-# @name Add Game
-POST http://localhost:8080/games
-Content-Type: application/json
-
-{
-  "winners": [
-    "John"
-  ],
-  "losers": [
-    "Olivier"
   ],
   "losersScore": 5
 }
