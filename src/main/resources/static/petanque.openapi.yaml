@@ -106,7 +106,7 @@ paths:
       summary: Report a new game
     delete:
       operationId: deleteLastGame
-      summary: Cancels last game
+      summary: Cancel last game
       description: >-
         This will cancel last game. Each player will have their elo reset to what is was before the
         game.
