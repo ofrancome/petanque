@@ -3,11 +3,11 @@
 
 ###
 # @name Add Season
-POST http://petanque:8080/seasons
+POST http://localhost:8080/seasons
 
 ###
 # @name Add Player
-POST http://petanque:8080/players
+POST http://localhost:8080/players
 Content-Type: application/json
 
 {
@@ -16,7 +16,7 @@ Content-Type: application/json
 
 ###
 # @name Add Player
-POST http://petanque:8080/players
+POST http://localhost:8080/players
 Content-Type: application/json
 
 {
@@ -25,7 +25,7 @@ Content-Type: application/json
 
 ###
 # @name Add Game
-POST http://petanque:8080/games
+POST http://localhost:8080/games
 Content-Type: application/json
 
 {
@@ -40,7 +40,7 @@ Content-Type: application/json
 
 ###
 # @name Add Game
-POST http://petanque:8080/games
+POST http://localhost:8080/games
 Content-Type: application/json
 
 {
@@ -55,7 +55,7 @@ Content-Type: application/json
 
 ###
 # @name Add Game
-POST http://petanque:8080/games
+POST http://localhost:8080/games
 Content-Type: application/json
 
 {

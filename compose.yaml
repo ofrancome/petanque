@@ -14,3 +14,19 @@ services:
       - 'SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/petanquedb'
     ports:
       - '8080:8080'
+    healthcheck:
+      test: ["CMD", "curl", "-f", 'http://petanque:8080/actuator/health']
+      interval: 1s
+      timeout: 2s
+      retries: 50
+
+  data:
+    image: jetbrains/intellij-http-client
+    depends_on:
+      petanque:
+        condition: service_healthy
+    command:
+      - '-D'
+      - 'http/init.http'
+    volumes:
+      - ./http:/workdir/http/
