@@ -40,7 +40,7 @@ public class PlayerServiceImpl implements PlayerService {
         player.setGamesLost(new HashSet<>());
         player.setGamesWon(new HashSet<>());
         player.setRankings(new HashSet<>());
-        Season season = seasonRepository.currentSeason();
+        Season season = seasonRepository.currentSeason().orElseThrow();
         Ranking ranking = new Ranking();
         ranking.setElo(STARTING_ELO);
         rankingRepository.save(ranking);

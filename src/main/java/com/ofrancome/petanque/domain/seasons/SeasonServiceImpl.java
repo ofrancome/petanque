@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -22,10 +23,8 @@ public class SeasonServiceImpl implements SeasonService {
 
     @Override
     public Season newSeason() {
-        Season currentSeason = seasonRepository.currentSeason();
-        if (currentSeason != null ) {
-            currentSeason.setEnd(localDateService.today());
-        }
+        Optional<Season> currentSeason = seasonRepository.currentSeason();
+        currentSeason.ifPresent(season -> season.setEnd(localDateService.today()));
         final Season newSeason = new Season();
         newSeason.setGames(Collections.emptySet());
         newSeason.setRankings(Collections.emptySet());
@@ -43,6 +42,6 @@ public class SeasonServiceImpl implements SeasonService {
 
     @Override
     public Season currentSeason() {
-        return seasonRepository.currentSeason();
+        return seasonRepository.currentSeason().orElseThrow();
     }
 }

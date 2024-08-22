@@ -42,10 +42,9 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game addGame(final Set<String> winnersNames, final Set<String> losersName, final Integer losersScore) {
-        log.info("Adding game");
         final Set<Player> winners = retrievePlayers(winnersNames);
         final Set<Player> losers = retrievePlayers(losersName);
-        final Season currentSeason = seasonRepository.currentSeason();
+        final Season currentSeason = seasonRepository.currentSeason().orElseThrow();
         addRankingIfMissing(winners, currentSeason);
         addRankingIfMissing(losers, currentSeason);
 
@@ -65,7 +64,6 @@ public class GameServiceImpl implements GameService {
             p.addLoss(game);
             playerRepository.save(p);
         });
-        log.info("Finished adding game");
         return game;
     }
 
@@ -83,7 +81,6 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Set<Game> retrieveGames() {
-        log.info("Retrieving games");
         final Iterable<Game> gameEntities = gameRepository.findAll();
         final Set<Game> games = new HashSet<>();
         gameEntities.forEach(games::add);
