@@ -1,15 +1,13 @@
-FROM registry.access.redhat.com/ubi8/openjdk-17:1.11 AS build
-# Set a default directory inside the container to work from.
+FROM registry.access.redhat.com/ubi8/openjdk-21:1.20 AS build
 WORKDIR /app
 
-# Copy the special Maven files that help us download dependencies.
-COPY . .
-RUN ls -al
-# Download all the required project dependencies.
-RUN ./mvnw dependency:resolve
+USER jboss:jboss
+COPY . ./
 
-# Copy our actual project files (code, resources, etc.) into the container.
-COPY src. /src
+USER root
+RUN chmod +x ./mvnw
 
-# When the container starts, run the Spring Boot app using Maven.
-CMD ["./mvnw", "spring-boot:run"]
+USER jboss:jboss
+RUN ./mvnw clean install
+
+CMD ["java", "-jar",  "target/petanque-0.0.1-SNAPSHOT.jar"]

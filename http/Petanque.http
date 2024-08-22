@@ -20,7 +20,7 @@ GET http://localhost:8080/players
 
 ###
 # @name Get player
-GET http://localhost:8080/players/Olivier
+GET http://localhost:8080/players/John
 
 ###
 # @name Add Game

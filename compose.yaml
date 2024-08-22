@@ -7,3 +7,10 @@ services:
       - 'POSTGRES_USER=petanque_usr'
     ports:
       - '5432:5432'
+
+  petanque:
+    build: .
+    environment:
+      - 'SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/petanquedb'
+    ports:
+      - '8080:8080'
