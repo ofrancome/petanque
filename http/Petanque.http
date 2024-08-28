@@ -1,6 +1,5 @@
 # Petanque
 
-
 ###
 # @name Add Season
 POST http://localhost:8080/seasons

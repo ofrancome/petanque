@@ -17,4 +17,4 @@ springdoc:
   api-docs:
     enabled: true
   swagger-ui:
-    url: /petanque.openapi.yaml
+    url: /petanque.openapi.yml

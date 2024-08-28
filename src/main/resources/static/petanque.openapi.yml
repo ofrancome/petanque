@@ -105,6 +105,11 @@ paths:
       operationId: addGame
       summary: Report a new game
     delete:
+      tags:
+        - Games
+      responses:
+        '204':
+          description: Game successfully deleted
       operationId: deleteLastGame
       summary: Cancel last game
       description: >-
@@ -239,7 +244,6 @@ components:
           type: string
         lastRanking:
           $ref: '#/components/schemas/PlayerRankingDto'
-          description: The player ranking for the current season
         rankings:
           description: History of all rankings per season
           type: array
@@ -344,7 +348,7 @@ components:
       properties:
         rank:
           format: int64
-          description: 'Chronological number of the game, since the beginning of times...'
+          description: 'Chronological rank of the game, since the beginning of times...'
           type: integer
         winners:
           description: >-
