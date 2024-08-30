@@ -3,13 +3,13 @@ services:
     image: 'postgres:latest'
     environment:
       - 'POSTGRES_DB=petanquedb'
-      - 'POSTGRES_PASSWORD=${DB_PASSWORD}'
-      - 'POSTGRES_USER=${DB_USER}'
+      - 'POSTGRES_PASSWORD=K-ro'
+      - 'POSTGRES_USER=petanque_usr'
     ports:
       - '5432:5432'
 
   petanque:
-    image: ofrancome/petanque:1.0.0
+    build: .
     environment:
       - 'SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/petanquedb'
       - 'SPRING_DATASOURCE_USERNAME=${DB_USER}'

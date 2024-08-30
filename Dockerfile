@@ -1,13 +1,17 @@
 FROM registry.access.redhat.com/ubi8/openjdk-21:1.20 AS build
-WORKDIR /app
-
 USER jboss:jboss
-COPY . ./
+WORKDIR /opt/workspace
+
+COPY .mvn .mvn/
+COPY src src/
+COPY Dockerfile ./Dockerfile
+COPY mvnw ./mvnw
+COPY pom.xml ./pom.xml
 
 USER root
 RUN chmod +x ./mvnw
-
+RUN chown -R jboss /opt/workspace
 USER jboss:jboss
-RUN ./mvnw clean install
+RUN ./mvnw clean package
 
-CMD ["java", "-jar",  "target/petanque-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar",  "target/petanque-1.0.0.jar"]
