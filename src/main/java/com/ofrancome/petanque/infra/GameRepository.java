@@ -13,4 +13,5 @@ public interface GameRepository extends CrudRepository<Game, Long> {
     @Query(nativeQuery=true, value = "select * from game order by id DESC limit 1")
     Game findLastGame();
 
+    Iterable<Game> findBySeason_Id(Long seasonId);
 }

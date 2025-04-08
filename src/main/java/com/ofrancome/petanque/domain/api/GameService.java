@@ -9,6 +9,7 @@ import java.util.Set;
 public interface GameService {
 
     Game addGame(Set<String> winners, Set<String> losers, Integer losersScore);
-    Set<Game> retrieveGames();
+    Set<Game> retrieveAllGames();
     void deleteLastGame();
+    Set<Game> retrieveGames(Long season);
 }

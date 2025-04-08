@@ -6,16 +6,18 @@ import com.ofrancome.petanque.domain.games.Game;
 import com.ofrancome.petanque.domain.api.GameService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 @RestController
 @RequestMapping("games")
@@ -28,8 +30,9 @@ public class GameController {
     }
 
     @GetMapping
-    public ResponseEntity<List<GameDto>> getGames() {
-        return ResponseEntity.ok(gameService.retrieveGames().stream().map(GameDto::from).sorted(Comparator.comparing(GameDto::gameNumber).reversed()).toList());
+    public ResponseEntity<List<GameDto>> getGames(@RequestParam @Nullable Long season) {
+        Set<Game> games = season != null ? gameService.retrieveGames(season) : gameService.retrieveAllGames();
+        return ResponseEntity.ok(games.stream().map(GameDto::from).sorted(Comparator.comparing(GameDto::gameNumber).reversed()).toList());
     }
 
     @PostMapping

@@ -74,6 +74,13 @@ paths:
     get:
       tags:
         - Games
+      parameters:
+        -
+          name: season
+          description: 'Filters games based on the season. If none is supplied, all games are retrieved'
+          schema:
+            type: number
+          in: query
       responses:
         '200':
           content:

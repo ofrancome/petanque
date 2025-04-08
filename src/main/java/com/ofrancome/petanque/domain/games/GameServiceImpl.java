@@ -80,8 +80,16 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Set<Game> retrieveGames() {
+    public Set<Game> retrieveAllGames() {
         final Iterable<Game> gameEntities = gameRepository.findAll();
+        final Set<Game> games = new HashSet<>();
+        gameEntities.forEach(games::add);
+        return games;
+    }
+
+    @Override
+    public Set<Game> retrieveGames(Long seasonNumber) {
+        final Iterable<Game> gameEntities = gameRepository.findBySeason_Id(seasonNumber);
         final Set<Game> games = new HashSet<>();
         gameEntities.forEach(games::add);
         return games;
